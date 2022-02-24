@@ -213,7 +213,10 @@ namespace DocumentMerger
                 filename = input + ".txt";
             }
 
-            verifyFileExists(filename);
+            if(!verifyFileExists(filename)) {
+                filename = getFileName(prompt);
+            }
+
             return filename;
         }
 
