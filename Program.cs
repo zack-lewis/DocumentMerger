@@ -6,7 +6,8 @@ namespace DocumentMerger
     {
         static void Main(string[] args)
         {
-            string filename1, filename2, newFile;
+            string newFile;
+            List<string> filenames = new List<string>();
             int wordCount = 0;
             
             // Display “Document Merger” followed by a blank line.
@@ -19,16 +20,19 @@ namespace DocumentMerger
 
                 // Prompt the user for the name of the second document.
                 // Verify that the second file exists. If not, give the user feedback and let them re-enter the second filename.
-                filename2 = getFileName("2");
+                for(int i = 0; i < numFiles; i++){
+                    string prompt = (i + 1).ToString();
+                    filenames.Add(getFileName(prompt));
+                }
 
                 // Prompt the user for a filename for the new file containing the merged content you will create. In the prompt present them with the default of the merged names if they don’t enter a name (e.g. they choose the default by just hitting enter). Also, if they don’t supply an extension of .txt, append .txt on the end.
                 // Example: Enter new filename (default: File1File2.txt):
-                newFile = getSaveName();
+                newFile = getSaveName(filenames.ToArray());
 
                 // Read and merge the text of the two files.
                 // Save the content to a file in the current directory.
                 try {
-                    readToFile(newFile,filename1,filename2);
+                    readToFile(newFile,filenames);
                 }
                 catch(Exception ex) {
                     // If an exception occurs, output the exception message and exit.
@@ -105,11 +109,24 @@ namespace DocumentMerger
             System.Console.WriteLine("----------------");
         }
 
-        private static string getSaveName()
+        private static string getSaveName(string[] files = null)
         {
-            string input, filename;
-            System.Console.WriteLine("Enter new filename for merged document:");
+            string input, filename, defaultF = "";
+            foreach(string f in files) {
+                if(f.EndsWith(".txt")) {
+                    defaultF += f.TrimEnd(".txt".ToCharArray());
+                }
+                else {
+                    defaultF += f;
+                }
+            }
+
+            System.Console.WriteLine($"Enter new filename for merged document. (default: { defaultF })");
             input = Console.ReadLine();
+
+            if(input == "" || input == null) {
+                input = defaultF;
+            }
 
             if(!input.EndsWith(".txt")) {
                 filename = input + ".txt";
@@ -119,8 +136,9 @@ namespace DocumentMerger
             }
 
             // Check input to ensure it isnt blank/null and doesnt already exist
-            if(filename != "" && filename != null && !verifyFileExists(filename)) {
-                filename = getSaveName();
+            if(!verifyFileExists(filename)) {
+                System.Console.WriteLine("File already exists!");
+                filename = getSaveName(files);
             }
 
             return filename;
