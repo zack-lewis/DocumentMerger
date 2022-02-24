@@ -161,6 +161,8 @@ namespace DocumentMerger
             System.Console.WriteLine($"Enter new filename for merged document. (default: { defaultF })");
             input = Console.ReadLine();
 
+            input = input.Trim();
+
             if(input == "" || input == null) {
                 input = defaultF;
             }
