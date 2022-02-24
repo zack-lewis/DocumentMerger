@@ -12,6 +12,21 @@ namespace DocumentMerger
             List<string> filenames = new List<string>();
             int wordCount = 0;
             
+
+            if(args.Length >= 3 ) {
+                newFile = args[0];
+                for(int i = 1; i < args.Length; i++) {
+                    filenames.Add(args[i]);
+                }
+                try {
+                    readToFile(newFile,filenames);
+                    wordCount = getCharacterCount(newFile);
+                    displayStats(newFile,wordCount);
+                }
+                catch(Exception ex) {
+                    displayException(ex);
+                }
+            }
             // Display “Document Merger” followed by a blank line.
             welcomeUser();
 
