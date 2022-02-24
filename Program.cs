@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace DocumentMerger
 {
@@ -18,8 +20,6 @@ namespace DocumentMerger
 
                 // Prompt the user for the name of the first text file.
                 // Verify that the first file exists. If not, give the user feedback and let them re-enter the first filename.
-                filename1 = getFileName("1");
-
                 // Prompt the user for the name of the second document.
                 // Verify that the second file exists. If not, give the user feedback and let them re-enter the second filename.
                 for(int i = 0; i < numFiles; i++){
@@ -42,7 +42,7 @@ namespace DocumentMerger
                     return;
                 }
                 // If an exception does not occur, output “[filename] was successfully saved. The document contains [count] characters.” and exit. [filename] and [count] are placeholders for the filename of the document and the number of characters it contains.
-                wordCount = getWordCount(newFile);
+                wordCount = getCharacterCount(newFile);
                 displayStats(newFile,wordCount);
 
                 // After the program does or does not fail to merge the files, ask the user if they would like to merge two more files. If they do, prompt them again for input. If not, exit the program.
@@ -75,9 +75,31 @@ namespace DocumentMerger
             System.Console.WriteLine($"{ file } was successfully saved. The document contains { count } characters.");
         }
 
-        private static int getWordCount(string newFile)
+        private static int getCharacterCount(string file)
         {
-            throw new NotImplementedException();
+            int output = 0;
+            string line;
+            
+            //open file
+            try {
+                StreamReader fileStream = new StreamReader(file);
+                while((line = fileStream.ReadLine()) != null) {
+                    System.Console.WriteLine(line);
+                    
+                    // split on space
+                    char[] characters = line.ToCharArray();
+                    foreach(char c in characters){
+                        if(c.ToString() != " ") {
+                            // add list length
+                            output += 1;
+                        }
+                    }
+                }           
+            }
+            catch(Exception ex) {
+                displayException(ex);
+            }
+            return output;
         }
 
         private static void readToFile(string outputFile, params string[] files)
