@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -188,8 +188,11 @@ namespace DocumentMerger
 
         private static bool verifyFileExists(string filename)
         {
-            //STUB
-            return true;
+            bool output = false;
+
+            output = File.Exists(filename);
+
+            return output;
         }
 
         private static string getFileName(string prompt)
