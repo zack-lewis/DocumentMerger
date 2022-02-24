@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -51,8 +51,8 @@ namespace DocumentMerger
                 }
             }
 
-            Console.WriteLine("Press <ENTER> to exit");
-            Console.ReadLine();
+            // Console.WriteLine("Press <ENTER> to exit");
+            // Console.ReadLine();
         }
 
         private static bool doAgain()
@@ -104,18 +104,31 @@ namespace DocumentMerger
 
         private static void readToFile(string outputFile, params string[] files)
         {
+            List<string> linesToWrite = new List<string>();
             try
             {
                 foreach(string file in files) {
-                    //STUB
-                    Console.WriteLine(file);
+                    using(StreamReader fileStream = new StreamReader(file)) {
+                        linesToWrite.Add(fileStream.ReadToEnd());
                 }
+            }
+
+                writeLines(outputFile, linesToWrite);
             }
             catch (System.Exception)
             {
                 throw;
             }
 
+        }
+
+        private static void writeLines(string file, List<string> lines)
+        {
+            using(StreamWriter writeStream = new StreamWriter(file)) {
+                foreach(string l in lines) {
+                    writeStream.WriteLine(l);
+                }
+            }
         }
 
         private static void readToFile(string outputFile, List<string> files)
@@ -160,7 +173,7 @@ namespace DocumentMerger
             }
 
             // Check input to ensure it isnt blank/null and doesnt already exist
-            if(!verifyFileExists(filename)) {
+            if(verifyFileExists(filename)) {
                 System.Console.WriteLine("File already exists!");
                 filename = getSaveName(files);
             }
@@ -173,17 +186,30 @@ namespace DocumentMerger
             Console.WriteLine("Document Merger\n");
         }
 
-        private static bool verifyFile(string filename)
+        private static bool verifyFileExists(string filename)
         {
-            throw new NotImplementedException();
+            //STUB
+            return true;
         }
 
         private static string getFileName(string prompt)
         {
-            string filename = "";
+            string input,filename = "";
+            Console.WriteLine($"Please enter name for file {prompt}");
+            input = Console.ReadLine();
+            if(input == null || input == "") {
+                input = getFileName(prompt);
+            }
 
-            verifyFile(filename);
-            throw new NotImplementedException();
+            if(input.EndsWith(".txt")){
+                filename = input;
+            }
+            else {
+                filename = input + ".txt";
+            }
+
+            verifyFileExists(filename);
+            return filename;
         }
 
     }
