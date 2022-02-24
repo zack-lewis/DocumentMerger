@@ -100,7 +100,16 @@ namespace DocumentMerger
 
         private static string getSaveName()
         {
-            throw new NotImplementedException();
+            string filename;
+            System.Console.WriteLine("Enter new filename for merged document:");
+            filename = Console.ReadLine();
+
+            // Check input to ensure it isnt blank/null and doesnt already exist
+            if(filename != "" && filename != null && !verifyFileExists(filename)) {
+                filename = getSaveName();
+            }
+
+            return filename;
         }
 
         private static void welcomeUser()
