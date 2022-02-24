@@ -87,7 +87,14 @@ namespace DocumentMerger
             {
                 throw;
             }
+
+        }
+
+        private static void readToFile(string outputFile, List<string> files)
+        {
+            string[] filesArray = files.ToArray();
             
+            readToFile(outputFile, filesArray);
         }
 
         private static void displayException(Exception ex) {
