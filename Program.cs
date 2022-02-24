@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace DocumentMerger
 {
@@ -105,7 +105,7 @@ namespace DocumentMerger
 
         private static void welcomeUser()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Document Merger\n");
         }
 
         private static bool verifyFile(string filename)
