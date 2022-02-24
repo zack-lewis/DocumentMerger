@@ -64,9 +64,9 @@ namespace DocumentMerger
             return output;
         }
 
-        private static void displayStats(string newFile, int wordCount)
+        private static void displayStats(string file, int count)
         {
-            throw new NotImplementedException();
+            System.Console.WriteLine($"{ file } was successfully saved. The document contains { count } characters.");
         }
 
         private static int getWordCount(string newFile)
