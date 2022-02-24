@@ -51,7 +51,17 @@ namespace DocumentMerger
 
         private static bool doAgain()
         {
-            throw new NotImplementedException();
+            string input;
+            bool output;
+            Console.WriteLine("Would you like to do another merge?");
+            input = Console.ReadLine().ToUpper();
+            if(input == "Y" || input == "YES" ) {
+                output = true;
+            }
+            else {
+                output = false;
+            }
+            return output;
         }
 
         private static void displayStats(string newFile, int wordCount)
