@@ -14,6 +14,8 @@ namespace DocumentMerger
             welcomeUser();
 
             while(true) {               
+                int numFiles = 2;   // TODO: Dynamically prompt for files list            
+
                 // Prompt the user for the name of the first text file.
                 // Verify that the first file exists. If not, give the user feedback and let them re-enter the first filename.
                 filename1 = getFileName("1");
