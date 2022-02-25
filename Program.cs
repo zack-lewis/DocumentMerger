@@ -46,7 +46,7 @@ namespace DocumentMerger
                     string inputName = getFileName(numFiles);
                     if(inputName == "") {
                         break;
-                    }
+                        }
 
                     filenames.Add(inputName);
                     numFiles++;                    
@@ -83,8 +83,13 @@ namespace DocumentMerger
         private static bool doAgain()
         {
             string input;
-            Console.WriteLine("Would you like to do another merge?");
-            input = Console.ReadLine().ToUpper();
+            do {
+                Console.WriteLine("Would you like to do another merge?");
+                input = Console.ReadLine();
+            } while(input == null);
+
+            input = input.ToUpper();
+
             // Y or YES input, repeat. Otherwise, Dont repeat
             if(input == "Y" || input == "YES" ) {
                 return true;
@@ -189,11 +194,19 @@ namespace DocumentMerger
             System.Console.WriteLine($"Enter new filename for merged document. (default: { defaultF }.txt)");
             input = Console.ReadLine();
 
-            // Trim spaces from input
-            input = input.Trim();
+            if(input == null){
+                System.Console.WriteLine("Filename cannot be null. <ENTER> for default name");
+                input = getSaveName(files);
+            }
+            
+            // remote whitespace from input
+            else if(input.Contains(" ")) {
+                // Trim spaces from input
+                input = input.Replace(" ","");
+            }
 
             // Default to filenames all together
-            if(input == "" || input == null) {
+            if(input == "" ) {
                 input = defaultF;
             }
 
@@ -207,7 +220,7 @@ namespace DocumentMerger
 
             // Check input to ensure it isnt blank/null and doesnt already exist
             if(verifyFileExists(filename)) {
-                System.Console.WriteLine("File already exists!");
+                System.Console.WriteLine($"File already exists: { filename }");
                 filename = getSaveName(files);
             }
 
@@ -234,15 +247,26 @@ namespace DocumentMerger
         private static string getFileName(int fileNumber)
         {
             string input,filename = "";
-            Console.WriteLine($"Please enter name for file { (fileNumber + 1).ToString() }");
+            Console.WriteLine($"Please enter name for file { (fileNumber + 1).ToString() }:");
             input = Console.ReadLine();
+
+            if(input == null) {
+                System.Console.WriteLine("Filename cannot be null");
+                input = getFileName(fileNumber);
+            }
+            // remove whitespace from input
+            else if(input.Contains(" ")) {
+                // Trim spaces from input
+                input = input.Replace(" ","");
+            }
+
             // If user gives a blank/null before we have at least 2 files, yell at them and tell them to do what they are told. 
-            if(input == null || input == "") {
+            if(input == "") {
                 if(fileNumber >= 2) {
                     return "";
                 }
                 else {
-                    Console.WriteLine("Must have at least 2 files to merge");
+                    Console.WriteLine("Must have at least 2 files to merge. Filename cannot be empty");
                     input = getFileName(fileNumber);
                 }
             }
@@ -256,6 +280,7 @@ namespace DocumentMerger
             
             // Yes, the file must exist in order to merge it in. 
             if(!verifyFileExists(filename)) {
+                System.Console.WriteLine($"File does not exist: { filename }");
                 filename = getFileName(fileNumber);
             }
 
